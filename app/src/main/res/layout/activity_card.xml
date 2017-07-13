@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="3dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100sp"
+        android:layout_marginRight="100sp"
+        android:src="@drawable/black_joker"/>
+
+    <Button
+        android:id="@+id/newCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Card"
+        android:layout_centerHorizontal="true" />
+    <Button
+        android:id="@+id/newDeck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/newCard"
+        android:layout_centerHorizontal="true"
+        android:text="New Deck"
+        android:layout_marginTop="20dp"/>
+    <!--
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/newCard"
+        android:text="hei"/>
+    -->
+</RelativeLayout>
