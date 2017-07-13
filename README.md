@@ -1,4 +1,4 @@
-# AndroidCardDeck
+# Card Deck
 Simple playing card deck app.
 
 I'm using this app to practice software devolopement in android.
