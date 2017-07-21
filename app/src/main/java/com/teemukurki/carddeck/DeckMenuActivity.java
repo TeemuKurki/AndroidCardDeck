@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 import com.teemukurki.carddeck.bean.Card;
@@ -20,16 +21,17 @@ import java.util.List;
 
 public class DeckMenuActivity extends AppCompatActivity {
 
+    ExpandableListView deckExpandable;
+
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_deck);
+        setContentView(R.layout.activity_deck_expandable);
 
-        ListView deckOptions = (ListView) findViewById(R.id.deckOptions);
+        deckExpandable = (ExpandableListView) findViewById(R.id.deckExpandableView);
 
-        List<String> list = generateCardDeckForList();
+        ExpandableListViewAdapter adapter = new ExpandableListViewAdapter(DeckMenuActivity.this);
 
-        final ArrayAdapter adapter = new ArrayAdapter(this, R.layout.listview_row,list);
-        deckOptions.setAdapter(adapter);
+        deckExpandable.setAdapter(adapter);
 
     }
 
@@ -54,25 +56,4 @@ public class DeckMenuActivity extends AppCompatActivity {
         }
     }
 
-    public List<String> generateCardDeckForList(){
-        List<String> suites = new ArrayList<>();
-        suites.add("hearts");
-        suites.add("spades");
-        suites.add("diamonds");
-        suites.add("clubs");
-
-        List<String> cardDeck = new ArrayList<String>();
-
-        for (String suit : suites) {
-            for (int i = 2; i < 11; i++){
-                String value = String.valueOf(i);
-                cardDeck.add(suit +" "+ value);
-            }
-            cardDeck.add(suit + " j");
-            cardDeck.add(suit + " q");
-            cardDeck.add(suit + " k");
-            cardDeck.add(suit + " a");
-        }
-        return cardDeck;
-    }
 }
