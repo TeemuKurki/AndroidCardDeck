@@ -11,17 +11,17 @@
         android:layout_marginRight="100sp"
         android:src="@drawable/black_joker"/>
 
-    <Button
-        android:id="@+id/newCard"
+    <!--<Button
+        android:id="@+id/customDeck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Card"
+        android:text="Custom Deck"
         android:layout_centerHorizontal="true" />
+        -->
     <Button
         android:id="@+id/newDeck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/newCard"
         android:layout_centerHorizontal="true"
         android:text="New Deck"
         android:layout_marginTop="20dp"/>

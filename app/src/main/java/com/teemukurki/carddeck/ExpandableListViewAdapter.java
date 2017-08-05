@@ -5,10 +5,16 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.teemukurki.carddeck.bean.ActiveCardDeck;
+import com.teemukurki.carddeck.bean.Card;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -16,6 +22,8 @@ import java.util.List;
  */
 
 public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
+
+    public static List<Card> activeCardDeckList = new ArrayList<Card>();
 
     String[] groupNames = {"Hearts", "Spades", "Diamonds", "Clubs"};
 
@@ -72,21 +80,40 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View view, ViewGroup parent) {
-        final TextView txtView = new TextView(context);
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View view, final ViewGroup parent) {
+        final CheckBox checkBox = new CheckBox(context);
         char suite = groupNames[groupPosition].charAt(0);
-        txtView.setText(suite + childNames.get(groupPosition)[childPosition]);
-        txtView.setPadding(120,10,10,0);
-        txtView.setTextSize(20);
-        txtView.setWidth(parent.getWidth());
+        checkBox.setText(suite + childNames.get(groupPosition)[childPosition]);
+        checkBox.setPadding(120,10,10,0);
+        checkBox.setTextSize(20);
+        checkBox.setWidth(parent.getWidth());
 
-        txtView.setOnClickListener(new View.OnClickListener() {
+
+       /* checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, txtView.getText().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, groupNames[groupPosition], Toast.LENGTH_SHORT).show();
+            }
+        });*/
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(checkBox.isChecked()){
+                    activeCardDeckList.add(new Card(checkBox.getText().toString().toLowerCase(), groupNames[groupPosition], childNames.get(groupPosition)[childPosition], true));
+                    ActiveCardDeck cardDeck = new ActiveCardDeck(activeCardDeckList);
+                    Log.d("LISTVIEWADAPTER", String.valueOf(activeCardDeckList.size()));
+                }
+                else {
+                    Iterator<Card> iter = activeCardDeckList.iterator();
+                    while (iter.hasNext()){
+                        if(iter.next().getId().equals(checkBox.getText().toString().toLowerCase())){
+                            iter.remove();
+                        };
+                    }
+                }
             }
         });
-        return txtView;
+        return checkBox;
     }
 
     @Override

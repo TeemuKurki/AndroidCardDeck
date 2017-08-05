@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.teemukurki.carddeck.bean.ActiveCardDeck;
 import com.teemukurki.carddeck.bean.Card;
 
 import java.util.ArrayList;
@@ -26,25 +27,26 @@ public class CardActivity extends AppCompatActivity {
 
     private float touchDownX, touchUpX, imageviewOrigX;
     static final int MIN_SWIPE_DISTANCE = 150;
+    public List<Card> cardDeck = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
 
-        final List<Card> cardDeck = generateCardDeck();
-
-        final Button newCard = (Button) findViewById(R.id.newCard);
+        //final Button customDeck = (Button) findViewById(R.id.customDeck);
         //final TextView textView = (TextView) findViewById(R.id.textView);
 
         final ImageView imageView = (ImageView) findViewById(R.id.imageView);
 
-        newCard.setOnClickListener(new View.OnClickListener() {
+        /*customDeck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               getNewCard(cardDeck, imageView);
+                cardDeck.clear();
+                Log.d("CARDACTIVITY", ExpandableListViewAdapter.activeCardDeckList.toString());
+                cardDeck = ExpandableListViewAdapter.activeCardDeckList;
             }
-        });
+        });*/
 
         imageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -108,14 +110,21 @@ public class CardActivity extends AppCompatActivity {
         newDeck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cardDeck.clear();
-                cardDeck.addAll(generateCardDeck());
-                imageView.setImageResource(R.drawable.black_joker);
-                //textView.setText("Deck Reset");
+                if(cardDeck != null){
+                    cardDeck.clear();
+                    cardDeck.addAll(generateCardDeck());
+                    imageView.setImageResource(R.drawable.black_joker);
+                    //textView.setText("Deck Reset");
+                }
             }
         });
     }
 
+    protected void onResume(){
+        super.onResume();
+
+        cardDeck = ExpandableListViewAdapter.activeCardDeckList;
+    }
 
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
@@ -136,7 +145,7 @@ public class CardActivity extends AppCompatActivity {
     }
 
     public void getNewCard(final List<Card> cardDeck, final ImageView imageView){
-        if(cardDeck.size() <= 0){
+        if(cardDeck == null || cardDeck.size() <= 0){
             imageView.setImageResource(R.drawable.red_joker);
             return;
         }
