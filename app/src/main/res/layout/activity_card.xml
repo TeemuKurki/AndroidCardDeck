@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:padding="3dp">
+    android:padding="3dp"
+    android:background="@color/backgroundCustom"
+    android:id="@+id/mainLayout">
 
     <ImageView
         android:id="@+id/imageView"
@@ -19,12 +21,35 @@
         android:layout_centerHorizontal="true" />
         -->
     <Button
+        android:id="@+id/deckList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deck"
+        android:layout_centerHorizontal="true" />
+
+    <Button
         android:id="@+id/newDeck"
+        android:layout_below="@+id/deckList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="New Deck"
         android:layout_marginTop="20dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.5"
+        android:background="#6d6d6d"
+        android:id="@+id/darkLayer">
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:id="@+id/deckListView">
+    </RelativeLayout>
+
     <!--
     <TextView
         android:id="@+id/textView"

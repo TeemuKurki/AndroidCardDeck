@@ -1,7 +1,8 @@
 package com.teemukurki.carddeck;
 
 import android.content.Intent;
-import android.os.Handler;
+import android.graphics.Color;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,9 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.teemukurki.carddeck.bean.ActiveCardDeck;
 import com.teemukurki.carddeck.bean.Card;
 
 import java.util.ArrayList;
@@ -29,10 +29,15 @@ public class CardActivity extends AppCompatActivity {
     static final int MIN_SWIPE_DISTANCE = 150;
     public List<Card> cardDeck = null;
 
+    private Boolean deckViewExtended = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
+
+        final RelativeLayout darkLayer = (RelativeLayout) findViewById(R.id.darkLayer);
+        darkLayer.setVisibility(View.GONE);
 
         //final Button customDeck = (Button) findViewById(R.id.customDeck);
         //final TextView textView = (TextView) findViewById(R.id.textView);
@@ -105,7 +110,6 @@ public class CardActivity extends AppCompatActivity {
             }
         });
 
-
        final Button newDeck = (Button) findViewById(R.id.newDeck);
         newDeck.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,30 +122,44 @@ public class CardActivity extends AppCompatActivity {
                 }
             }
         });
+
+        final Button deckList = (Button) findViewById(R.id.deckList);
+
+        final float deckListBtnPos = deckList.getX();
+
+        deckList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CardDeckFragment cardDeckFragment = new CardDeckFragment();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+
+                if(!deckViewExtended){
+                    fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.deckListView, cardDeckFragment).commit();
+                    darkLayer.setVisibility(View.VISIBLE);
+                    newDeck.setVisibility(View.INVISIBLE);
+                    deckList.animate().translationX(deckListBtnPos + 350).start();
+                    deckViewExtended = true;
+                }
+                else if(deckViewExtended){
+                    try {
+                        fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).remove(getSupportFragmentManager().findFragmentById(R.id.deckListView)).commit();
+                    }catch (NullPointerException e){
+                        Log.e("CardActivity", "ERROR! Boolean deckViewExtended was true. Setting it to false");
+                        deckViewExtended = false;
+                    }
+                    darkLayer.setVisibility(View.GONE);
+                    newDeck.setVisibility(View.VISIBLE);
+                    deckList.animate().translationX(deckListBtnPos).start();
+                    deckViewExtended = false;
+                }
+            }
+        });
     }
 
     protected void onResume(){
         super.onResume();
 
         cardDeck = ExpandableListViewAdapter.activeCardDeckList;
-    }
-
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item){
-        Intent intent;
-        switch (item.getItemId()){
-            case R.id.deckMenu:
-                intent = new Intent(CardActivity.this, DeckMenuActivity.class);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     public void getNewCard(final List<Card> cardDeck, final ImageView imageView){
