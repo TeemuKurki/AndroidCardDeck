@@ -83,25 +83,23 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View view, final ViewGroup parent) {
         final CheckBox checkBox = new CheckBox(context);
         char suite = groupNames[groupPosition].charAt(0);
+        String text = suite + childNames.get(groupPosition)[childPosition];
         checkBox.setText(suite + childNames.get(groupPosition)[childPosition]);
         checkBox.setPadding(120,10,10,0);
         checkBox.setTextSize(20);
         checkBox.setWidth(parent.getWidth());
 
-
-       /* checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, groupNames[groupPosition], Toast.LENGTH_SHORT).show();
+        for (Card c : activeCardDeckList) {
+            if(c.getId().equals(text.toLowerCase())){
+                checkBox.setChecked(true);
             }
-        });*/
+        }
+
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(checkBox.isChecked()){
                     activeCardDeckList.add(new Card(checkBox.getText().toString().toLowerCase(), groupNames[groupPosition], childNames.get(groupPosition)[childPosition], true));
-                    ActiveCardDeck cardDeck = new ActiveCardDeck(activeCardDeckList);
-                    Log.d("LISTVIEWADAPTER", String.valueOf(activeCardDeckList.size()));
                 }
                 else {
                     Iterator<Card> iter = activeCardDeckList.iterator();
@@ -126,7 +124,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         for (int i = 0; i < groups.length; i++){
             childrenList.add(generateOneChildGroup(i));
         }
-        Log.d("generatedDeckSize",String.valueOf(childrenList.size()));
         return childrenList;
     }
 
@@ -140,7 +137,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         cards.add("Q");
         cards.add("K");
         cards.add("A");
-        Log.d("cardsListSize", String.valueOf(cards.size()));
         return cards.toArray(new String[position]);
     }
 }

@@ -39,19 +39,9 @@ public class CardActivity extends AppCompatActivity {
         final RelativeLayout darkLayer = (RelativeLayout) findViewById(R.id.darkLayer);
         darkLayer.setVisibility(View.GONE);
 
-        //final Button customDeck = (Button) findViewById(R.id.customDeck);
-        //final TextView textView = (TextView) findViewById(R.id.textView);
-
         final ImageView imageView = (ImageView) findViewById(R.id.imageView);
 
-        /*customDeck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cardDeck.clear();
-                Log.d("CARDACTIVITY", ExpandableListViewAdapter.activeCardDeckList.toString());
-                cardDeck = ExpandableListViewAdapter.activeCardDeckList;
-            }
-        });*/
+        cardDeck = ExpandableListViewAdapter.activeCardDeckList;
 
         imageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -118,7 +108,6 @@ public class CardActivity extends AppCompatActivity {
                     cardDeck.clear();
                     cardDeck.addAll(generateCardDeck());
                     imageView.setImageResource(R.drawable.black_joker);
-                    //textView.setText("Deck Reset");
                 }
             }
         });
@@ -156,12 +145,6 @@ public class CardActivity extends AppCompatActivity {
         });
     }
 
-    protected void onResume(){
-        super.onResume();
-
-        cardDeck = ExpandableListViewAdapter.activeCardDeckList;
-    }
-
     public void getNewCard(final List<Card> cardDeck, final ImageView imageView){
         if(cardDeck == null || cardDeck.size() <= 0){
             imageView.setImageResource(R.drawable.red_joker);
@@ -170,7 +153,6 @@ public class CardActivity extends AppCompatActivity {
         Random rng = new Random();
         int cardIndex = rng.nextInt(cardDeck.size());
         int cardViewId = getResources().getIdentifier(cardDeck.get(cardIndex).getId(), "drawable", getPackageName());
-        //textView.setText(cardDeck.get(cardIndex).toString());
         Log.d("TEEMU", cardDeck.get(cardIndex).toString());
         imageView.setImageResource(cardViewId);
         cardDeck.remove(cardIndex);

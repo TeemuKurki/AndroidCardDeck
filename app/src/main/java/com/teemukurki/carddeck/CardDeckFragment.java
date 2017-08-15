@@ -17,10 +17,12 @@ import android.widget.TextView;
 public class CardDeckFragment extends Fragment {
 
 
+
     public CardDeckFragment() {
         // Required empty public constructor
     }
 
+    ExpandableListViewAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,11 +33,16 @@ public class CardDeckFragment extends Fragment {
 
         ExpandableListView deckExpandable = (ExpandableListView) view.findViewById(R.id.deckExpandableView);
 
-        ExpandableListViewAdapter adapter = new ExpandableListViewAdapter(getContext());
+        adapter = new ExpandableListViewAdapter(getContext());
 
         deckExpandable.setAdapter(adapter);
 
         return view;
+    }
+    public void onResume(){
+        super.onResume();
+
+        
     }
 
 }
